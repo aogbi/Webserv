@@ -6,7 +6,7 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:09:58 by aogbi             #+#    #+#             */
-/*   Updated: 2025/07/14 18:27:17 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/07/14 18:32:18 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
-
-using namespace std;
 
 int main()
 {
@@ -38,9 +36,7 @@ int main()
 
     char buffer[1024] = { 0 };
     recv(clientSocket, buffer, sizeof(buffer), 0);
-    cout << "Message from client: " << buffer
-              << endl;
-
+    std::cout << "Message from client: " << buffer << std::endl;
     close(serverSocket);
 
     return 0;
