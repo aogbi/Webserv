@@ -1,0 +1,14 @@
+*.o
+
+*.a
+
+*.swp
+
+.nfs*
+
+.vscode
+
+test.c
+
+.nfs*
+
