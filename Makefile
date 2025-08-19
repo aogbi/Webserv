@@ -1,23 +1,20 @@
-NAME1    = client
-NAME2    = server
-SSRCS    = server.cpp
-CSRCS	= client.cpp
-COBJS    = $(CSRCS:.cpp=.o)
-SOBJS    = $(SSRCS:.cpp=.o)
+NAME    = Webserv
+SRCS    = 	main.cpp \
+			server.cpp 
+OBJS    = $(SRCS:.cpp=.o)
 CXX     = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-all: $(NAME1) $(NAME2)
+all: $(NAME)
 
-$(NAME1) $(NAME2): $(SOBJS) $(COBJS)
-	$(CXX) $(CXXFLAGS) $(COBJS) -o $(NAME1)
-	$(CXX) $(CXXFLAGS) $(SOBJS) -o $(NAME2)
+$(NAME): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
 
 clean:
-	rm -f $(SOBJS) $(COBJS)
+	rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME1) $(NAME2)
+	rm -f $(NAME)
 
 re: fclean all
 
