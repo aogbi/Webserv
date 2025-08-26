@@ -4,8 +4,11 @@ SRCS    = 	main.cpp \
 OBJS    = $(SRCS:.cpp=.o)
 CXX     = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+RESET = "\033[0m"
+BLACK = "\033[1m\033[37m"
 
 all: $(NAME)
+	@echo $(BLACK) webserv compiled 🌐 $(RESET)
 
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)

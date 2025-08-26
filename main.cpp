@@ -6,19 +6,20 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:56:58 by aogbi             #+#    #+#             */
-/*   Updated: 2025/08/19 22:58:40 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/08/26 05:35:24 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
-int main() {
-    Server server(8080);
-    if (!server.setup()) {
-        return 1;
+int main(int argc, char *argv[]) {
+    if (argc == 1 || argc == 2)
+    {
+        Server server(8080);
+        if (!server.setup()) {
+            return 1;
+        }
+        server.run();
     }
-
-    server.run();
-
     return 0;
 }
