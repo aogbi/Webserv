@@ -6,11 +6,12 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:46:51 by aogbi             #+#    #+#             */
-/*   Updated: 2025/09/04 11:30:29 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/09/04 11:51:30 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
+#include "request.hpp"
 
 Server::Server(std::string file) : configfile(file) {
 	parseConfig();
@@ -108,6 +109,18 @@ void Server::run() {
 					i--;
 				} else {
 					std::cout << "Received: " << buffer << std::endl;
+					Request req;
+					if (req.parse(std::string(buffer, bytes_read))) {
+						std::cout << "Method: " << req.getMethod() << std::endl;
+						std::cout << "Path: " << req.getPath() << std::endl;
+						std::cout << "Version: " << req.getVersion() << std::endl;
+						std::cout << "Headers:" << std::endl;
+						const std::map<std::string, std::string>& hdrs = req.getHeaders();
+						for (std::map<std::string, std::string>::const_iterator it = hdrs.begin(); it != hdrs.end(); ++it) {
+							std::cout << it->first << ": " << it->second << std::endl;
+						}
+						std::cout << "Body: " << req.getBody() << std::endl;
+					}
 					const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
 					send(fds[i].fd, response, strlen(response), 0);
 				}
