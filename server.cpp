@@ -6,17 +6,27 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:46:51 by aogbi             #+#    #+#             */
-/*   Updated: 2025/08/20 21:28:35 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/09/04 11:30:29 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
-Server::Server(int port) : server_fd(-1), port(port) {
-	std::memset(&address, 0, sizeof(address));
-	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = INADDR_ANY;
-	address.sin_port = htons(port);
+Server::Server(std::string file) : configfile(file) {
+	parseConfig();
+	std::memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags = AI_PASSIVE;
+	std::stringstream ss;
+	ss << port;
+	std::string portStr = ss.str();
+	if (getaddrinfo(NULL, portStr.c_str(), &hints, &res) != 0) {
+		std::cerr << "getaddrinfo failed: " << gai_strerror(errno) << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	address = *(struct sockaddr_in *)res->ai_addr;
+	freeaddrinfo(res);
 }
 
 Server::~Server() {
@@ -29,7 +39,7 @@ Server::~Server() {
 bool Server::setup() {
 	server_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (server_fd == -1) {
-		perror("socket failed");
+		std::cerr << "socket failed: " << strerror(errno) << std::endl;
 		return false;
 	}
 
@@ -37,12 +47,12 @@ bool Server::setup() {
 	setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
 	if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
-		perror("bind failed");
+		std::cerr << "bind failed: " << strerror(errno) << std::endl;
 		return false;
 	}
 
 	if (listen(server_fd, SOMAXCONN) < 0) {
-		perror("listen failed");
+		std::cerr << "listen failed: " << strerror(errno) << std::endl;
 		return false;
 	}
 
@@ -53,61 +63,60 @@ bool Server::setup() {
 int Server::getSocket() const {
 	return server_fd;
 }
+int Server::acceptClient() {
+	addrlen = sizeof(address);
+	int client_fd = accept(server_fd, (struct sockaddr*)&address, &addrlen);
+	if (client_fd < 0) {
+		std::cerr << "accept failed: " << strerror(errno) << std::endl;
+		return -1;
+	}
+	std::cout << "New connection accepted" << std::endl;
+	return client_fd;
+}
 
 void Server::run() {
-	std::vector<struct pollfd> fds;
-	struct pollfd server_poll;
-	server_poll.fd = server_fd;
-	server_poll.events = POLLIN;
-	fds.push_back(server_poll);
+	struct pollfd fds[200];
+	fds[0].fd = server_fd;
+	fds[0].events = POLLIN;
+	int nfds = 1;
 
 	while (true) {
-		int activity = poll(fds.data(), fds.size(), -1);
+		int activity = poll(fds, nfds, -1);
 		if (activity < 0) {
-			perror("poll failed");
+			std::cerr << "poll error: " << strerror(errno) << std::endl;
 			break;
 		}
 
 		if (fds[0].revents & POLLIN) {
-			struct sockaddr_in client_addr;
-			socklen_t client_len = sizeof(client_addr);
-			int client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &client_len);
-			if (client_fd >= 0) {
-				std::cout << "New client connected: "
-				<< inet_ntoa(client_addr.sin_addr)
-				<< ":" << ntohs(client_addr.sin_port) << std::endl;
-				struct pollfd client_poll;
-				client_poll.fd = client_fd;
-				client_poll.events = POLLIN;
-				fds.push_back(client_poll);
+			int client_fd = acceptClient();
+			if (client_fd != -1 && nfds < 200) {
+				fds[nfds].fd = client_fd;
+				fds[nfds].events = POLLIN;
+				nfds++;
 			}
 		}
 
-		for (size_t i = 1; i < fds.size(); i++) {
+		for (int i = 1; i < nfds; i++) {
 			if (fds[i].revents & POLLIN) {
-                char buffer[1024];
-                int bytes = recv(fds[i].fd, buffer, sizeof(buffer) - 1, 0);
-                if (bytes <= 0) {
-                    std::cout << "Client disconnected: " << fds[i].fd << std::endl;
-                    close(fds[i].fd);
-                    fds.erase(fds.begin() + i);
-                    i--;
-                } 
-				else {
-                    buffer[bytes] = '\0';
-                    std::cout << "Request:\n" << buffer << std::endl;
-					const char* response =
-					    "HTTP/1.1 200 OK\r\n"
-					    "Content-Type: text/html\r\n"
-					    "Content-Length: 38\r\n"
-					    "\r\n"
-					    "<html><h1>Hello, Webserv!</h1></html>";
-					send(fds[i].fd, response, strlen(response), 0);
+				char buffer[1024] = {0};
+				int bytes_read = read(fds[i].fd, buffer, sizeof(buffer));
+				if (bytes_read <= 0) {
 					close(fds[i].fd);
-					fds.erase(fds.begin() + i);
+					std::cout << "Connection closed" << std::endl;
+					fds[i] = fds[nfds - 1];
+					nfds--;
 					i--;
+				} else {
+					std::cout << "Received: " << buffer << std::endl;
+					const char *response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
+					send(fds[i].fd, response, strlen(response), 0);
 				}
 			}
 		}
 	}
+}
+
+int Server::parseConfig() {
+	port = 8080;
+	return 0;
 }
