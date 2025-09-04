@@ -6,12 +6,13 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:46:51 by aogbi             #+#    #+#             */
-/*   Updated: 2025/09/04 11:51:30 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/09/04 12:07:39 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 #include "request.hpp"
+
 
 Server::Server(std::string file) : configfile(file) {
 	parseConfig();
@@ -130,6 +131,24 @@ void Server::run() {
 }
 
 int Server::parseConfig() {
-	port = 8080;
+	std::ifstream file(configfile.c_str());
+	if (!file.is_open()) {
+		std::cerr << "Failed to open config file: " << configfile << std::endl;
+		return 1;
+	}
+	std::string line;
+	while (std::getline(file, line)) {
+		std::istringstream iss(line);
+		std::string key, value;
+		if (!(iss >> key >> value))
+			continue;
+		if (key == "listen") {
+			port = static_cast<uint16_t>(std::atoi(value.c_str())); // atoi machi allowed
+		} else if (key == "root") {
+			// Add a root member variable to Server if needed
+			// root = value;
+		}
+	}
+	file.close();
 	return 0;
 }
