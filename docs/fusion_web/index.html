@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Webserv</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .status {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .links {
+            margin: 20px 0;
+        }
+        .links a {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .links a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Welcome to Webserv!</h1>
+        <div class="status">
+            ✅ Your web server is running successfully!
+        </div>
+        <p>This is the default index page for your Webserv implementation.</p>
+        
+        <div class="links">
+            <h3>Test Links:</h3>
+            <a href="/tours/">Tours Directory</a>
+            <a href="/cgi-bin/">CGI Directory</a>
+            <a href="/nonexistent">404 Test</a>
+        </div>
+        
+        <h3>Features Implemented:</h3>
+        <ul>
+            <li>✅ Configuration file parsing</li>
+            <li>✅ HTTP request parsing</li>
+            <li>✅ Static file serving</li>
+            <li>✅ Directory listing (when enabled)</li>
+            <li>✅ Location-based routing</li>
+            <li>✅ Method restrictions</li>
+            <li>✅ Custom error pages</li>
+            <li>✅ MIME type detection</li>
+            <li>🔄 CGI support (in progress)</li>
+            <li>🔄 POST/DELETE handling (in progress)</li>
+        </ul>
+    </div>
+</body>
+</html>

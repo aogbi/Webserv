@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
+/*   server_backup.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:42:43 by aogbi             #+#    #+#             */
-/*   Updated: 2025/09/05 16:40:38 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/09/05 16:48:46 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <sys/wait.h>
-#include <signal.h>
-
-extern char **environ;
 
 // Forward declaration
 class Request;
@@ -47,7 +43,6 @@ struct Location {
     std::string redirect;
     std::vector<std::string> cgiPath;
     std::vector<std::string> cgiExt;
-    std::string uploadDir;
 };
 
 class Server {
@@ -91,10 +86,6 @@ public:
     bool isCgiRequest(const std::string& path, const Location* loc);
     std::string executeCgi(const std::string& scriptPath, const Request& req, const Location* loc);
     std::string getCgiInterpreter(const std::string& extension, const Location* loc);
-    
-    // File upload methods
-    std::string handleFileUpload(const Request& req, const Location* loc);
-    bool saveUploadedFile(const std::string& content, const std::string& filename, const std::string& uploadDir);
 };
 
 #endif
