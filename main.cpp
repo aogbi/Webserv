@@ -6,23 +6,19 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:56:58 by aogbi             #+#    #+#             */
-/*   Updated: 2025/09/05 16:43:45 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/09/05 17:14:56 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
-#include <iostream>
 #include <csignal>
 
 Server* g_server = NULL;
+volatile bool g_running = true;
 
 void signalHandler(int signum) {
-    if (g_server) {
-        std::cout << "\n🛑 Signal " << signum << " received. Shutting down server gracefully..." << std::endl;
-        delete g_server;
-        g_server = NULL;
-    }
-    exit(signum);
+    std::cout << "\n🛑 Signal " << signum << " received. Shutting down server gracefully..." << std::endl;
+    g_running = false;
 }
 
 void printUsage(const char* programName) {
@@ -54,6 +50,8 @@ int main(int argc, char *argv[]) {
         }
         std::cout << "✅ Server setup complete. Running..." << std::endl;
         g_server->run();
+        
+        std::cout << "🛑 Server shutdown complete." << std::endl;
         delete g_server;
         g_server = NULL;
         
