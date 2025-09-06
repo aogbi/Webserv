@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploaded Files</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .file-list { max-width: 800px; }
+        .file-item { 
+            margin: 15px 0; 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+            background-color: #f9f9f9;
+        }
+        .file-name { 
+            font-weight: bold; 
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .file-links a { 
+            color: #007bff; 
+            text-decoration: none; 
+            margin-right: 15px;
+        }
+        .file-links a:hover { text-decoration: underline; }
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Uploaded Files</h1>
+    <div class="file-list">
+        <div class="file-item">
+            <div class="file-name">test_image.jpg</div>
+            <div class="file-links">
+                <a href="/uploads/test_image.jpg" target="_blank">View</a>
+                <a href="/uploads/test_image.jpg" download>Download</a>
+            </div>
+            <div>
+                <p><em>Image: 28 bytes</em></p>
+            </div>
+        </div>
+        
+        <div class="file-item">
+            <div class="file-name">test_image.png</div>
+            <div class="file-links">
+                <a href="/uploads/test_image.png" target="_blank">View</a>
+                <a href="/uploads/test_image.png" download>Download</a>
+            </div>
+            <div>
+                <p><em>Image: 22 bytes</em></p>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 20px; background-color: #e7f3ff; border-radius: 5px;">
+            <h3>Upload New Files</h3>
+            <p>To upload new images or files:</p>
+            <ol>
+                <li><a href="/upload.html">Go to the Upload Page</a></li>
+                <li>Select your image file</li>
+                <li>Click "Upload File"</li>
+                <li>Refresh this page to see your new upload</li>
+            </ol>
+        </div>
+    </div>
+    
+    <p style="margin-top: 30px;">
+        <a href="/">← Back to Home</a> | 
+        <a href="/upload.html">Upload Files</a> |
+        <a href="/video_test.html">Video Downloads</a>
+    </p>
+</body>
+</html>

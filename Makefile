@@ -5,7 +5,7 @@ SRCS    = 	main.cpp \
 			response.cpp 
 OBJS    = $(SRCS:.cpp=.o)
 CXX     = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -fPIE
 RESET = "\033[0m"
 BLACK = "\033[1m\033[37m"
 

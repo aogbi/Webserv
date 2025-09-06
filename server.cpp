@@ -6,7 +6,7 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:46:51 by aogbi             #+#    #+#             */
-/*   Updated: 2025/09/05 17:16:56 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/09/05 18:47:29 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -484,7 +484,7 @@ std::string Server::handleRequest(const Request& req) {
 		return result;
 	} else if (req.getMethod() == "POST") {
 		// Check if this is a file upload request
-		std::string contentType = req.getHeader("Content-Type");
+		std::string contentType = req.getHeader("content-type");
 		if (contentType.find("multipart/form-data") != std::string::npos && loc && !loc->uploadDir.empty()) {
 			return handleFileUpload(req, loc);
 		} else {
@@ -910,7 +910,7 @@ std::string Server::executeCgi(const std::string& scriptPath, const Request& req
 std::string Server::handleFileUpload(const Request& req, const Location* loc) {
 	Response response;
 	
-	std::string contentType = req.getHeader("Content-Type");
+	std::string contentType = req.getHeader("content-type");
 	std::string body = req.getBody();
 	
 	// Extract boundary from Content-Type

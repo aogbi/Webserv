@@ -6,12 +6,11 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 18:56:58 by aogbi             #+#    #+#             */
-/*   Updated: 2025/09/05 17:14:56 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/09/05 18:33:08 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
-#include <csignal>
 
 Server* g_server = NULL;
 volatile bool g_running = true;
