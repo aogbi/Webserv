@@ -1,37 +1,409 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>File Upload Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📤 File Upload - Webserv</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .upload-form { 
-            max-width: 500px; 
-            padding: 20px; 
-            border: 1px solid #ddd; 
-            border-radius: 5px; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        input[type="file"] { margin: 10px 0; }
-        input[type="submit"] { 
-            background-color: #007bff; 
-            color: white; 
-            padding: 10px 20px; 
-            border: none; 
-            border-radius: 3px; 
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .upload-section {
+            padding: 50px;
+        }
+        
+        .upload-area {
+            border: 3px dashed #007bff;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9ff, #e8f0ff);
+            transition: all 0.3s ease;
             cursor: pointer;
         }
-        input[type="submit"]:hover { background-color: #0056b3; }
+        
+        .upload-area:hover {
+            border-color: #0056b3;
+            background: linear-gradient(135deg, #e8f0ff, #d4e7ff);
+            transform: scale(1.02);
+        }
+        
+        .upload-area.dragover {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+        }
+        
+        .upload-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        
+        .upload-text {
+            margin-bottom: 20px;
+        }
+        
+        .upload-text h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .upload-text p {
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        input[type="file"] {
+            position: absolute;
+            left: -9999px;
+        }
+        
+        .file-input-label {
+            background: #007bff;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        
+        .file-input-label:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+        
+        .selected-file {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e8;
+            border-radius: 10px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+        
+        .selected-file.show {
+            display: block;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-icon {
+            font-size: 1.5em;
+        }
+        
+        .file-details strong {
+            color: #155724;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(40,167,69,0.3);
+        }
+        
+        .submit-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            margin-top: 20px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #007bff, #28a745);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .navigation {
+            background: #f8f9fa;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-links a {
+            padding: 10px 20px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background: #495057;
+            transform: translateY(-1px);
+        }
+        
+        @media (max-width: 768px) {
+            .upload-section {
+                padding: 30px 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>File Upload Test</h1>
-    <div class="upload-form">
-        <h3>Upload a file</h3>
-        <form action="/" method="post" enctype="multipart/form-data">
-            <label for="file">Choose file:</label><br>
-            <input type="file" id="file" name="file" required><br>
-            <input type="submit" value="Upload File">
-        </form>
+    <div class="container">
+        <div class="header">
+            <h1>📤 File Upload</h1>
+            <p>Share your files with the world</p>
+        </div>
+        
+        <div class="upload-section">
+            <form action="/uploads/" method="post" enctype="multipart/form-data" id="uploadForm">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">☁️</div>
+                    <div class="upload-text">
+                        <h3>Drop your files here</h3>
+                        <p>or click to browse</p>
+                        <p><small>Supports images, documents, archives and more</small></p>
+                    </div>
+                    
+                    <div class="file-input-wrapper">
+                        <input type="file" id="file" name="file" required>
+                        <label for="file" class="file-input-label">
+                            📁 Choose File
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="selected-file" id="selectedFile">
+                    <div class="file-info">
+                        <span class="file-icon">📄</span>
+                        <div class="file-details">
+                            <strong>Selected: </strong><span id="fileName"></span><br>
+                            <small>Size: <span id="fileSize"></span></small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                    🚀 Upload File
+                </button>
+            </form>
+        </div>
+        
+        <div class="navigation">
+            <div class="nav-links">
+                <a href="/">🏠 Home</a>
+                <a href="/uploads.html">📁 View Uploads</a>
+                <a href="/tours/">🗺️ Tours</a>
+            </div>
+        </div>
     </div>
-    <p><a href="/">← Back to Home</a></p>
+    
+    <script>
+        const fileInput = document.getElementById('file');
+        const uploadArea = document.getElementById('uploadArea');
+        const selectedFile = document.getElementById('selectedFile');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const submitBtn = document.getElementById('submitBtn');
+        const uploadForm = document.getElementById('uploadForm');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        
+        // File input change handler
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        // Drag and drop handlers
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileSelect();
+            }
+        });
+        
+        // Click to browse
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        function handleFileSelect() {
+            const file = fileInput.files[0];
+            if (file) {
+                // Check file size (10MB limit)
+                const maxSize = 10 * 1024 * 1024; // 10MB
+                if (file.size > maxSize) {
+                    alert('❌ File is too large! Maximum size is 10MB.\nYour file: ' + formatFileSize(file.size));
+                    fileInput.value = '';
+                    selectedFile.classList.remove('show');
+                    submitBtn.disabled = true;
+                    return;
+                }
+                
+                fileName.textContent = file.name;
+                fileSize.textContent = formatFileSize(file.size);
+                
+                // Add size indicator
+                if (file.size > 5 * 1024 * 1024) { // > 5MB
+                    fileSize.style.color = '#dc3545'; // Red
+                    fileSize.textContent += ' (Large file)';
+                } else if (file.size > 1024 * 1024) { // > 1MB
+                    fileSize.style.color = '#ffc107'; // Yellow
+                    fileSize.textContent += ' (Medium file)';
+                } else {
+                    fileSize.style.color = '#28a745'; // Green
+                    fileSize.textContent += ' (Small file)';
+                }
+                
+                selectedFile.classList.add('show');
+                submitBtn.disabled = false;
+                
+                // Set appropriate icon
+                const icon = selectedFile.querySelector('.file-icon');
+                if (file.type.startsWith('image/')) {
+                    icon.textContent = '🖼️';
+                } else if (file.type.includes('pdf')) {
+                    icon.textContent = '📄';
+                } else if (file.type.includes('zip') || file.type.includes('rar')) {
+                    icon.textContent = '📦';
+                } else {
+                    icon.textContent = '📄';
+                }
+            }
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // Form submission with progress simulation
+        uploadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Uploading...';
+            progressBar.style.display = 'block';
+            
+            // Simulate upload progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // Submit the actual form
+                    setTimeout(() => {
+                        uploadForm.submit();
+                    }, 500);
+                }
+                progressFill.style.width = progress + '%';
+            }, 200);
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,42 @@
+nohup: ignoring input
+🌐 Starting Webserv...
+📁 Using config file: configs/default.conf
+Server listening on port 8080
+✅ Server setup complete. Running...
+🚀 Server running... (Press Ctrl+C to stop)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)
+New connection accepted
+📝 Client connected (fd: 4)
+📤 Request completed, closing connection (fd: 4)

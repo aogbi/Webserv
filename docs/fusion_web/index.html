@@ -3,83 +3,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Webserv</title>
+    <title>🌐 Webserv - High Performance Web Server</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f4f4f4;
         }
-        .container {
-            background-color: white;
+        
+        .hero {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            margin-bottom: 40px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #007bff, #6f42c1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(40,167,69,0.3);
+        }
+        
+        .hero-description {
+            font-size: 1.2em;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        h1 {
-            color: #333;
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .feature-card p {
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .quick-links {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
         }
-        .status {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 20px 0;
+        
+        .quick-links h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2em;
         }
-        .links {
-            margin: 20px 0;
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
-        .links a {
-            display: inline-block;
-            margin: 5px 10px;
-            padding: 8px 15px;
-            background-color: #007bff;
-            color: white;
+        
+        .link-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            padding: 25px;
             text-decoration: none;
-            border-radius: 5px;
+            color: inherit;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
-        .links a:hover {
-            background-color: #0056b3;
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            border-color: #007bff;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+        
+        .link-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .link-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .link-desc {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .features-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .features-section h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2em;
+        }
+        
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            transform: translateX(5px);
+        }
+        
+        .feature-status {
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+        
+        .feature-text {
+            flex: 1;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 40px 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🌐 Welcome to Webserv!</h1>
-        <div class="status">
-            ✅ Your web server is running successfully!
-        </div>
-        <p>This is the default index page for your Webserv implementation.</p>
-        
-        <div class="links">
-            <h3>Test Links:</h3>
-            <a href="/tours/">Tours Directory</a>
-            <a href="/cgi-bin/">CGI Directory</a>
-            <a href="/upload.html">Upload Files</a>
-            <a href="/uploads.html">View Uploads</a>
-            <a href="/video_test.html">Video Downloads</a>
-            <a href="/nonexistent">404 Test</a>
+        <div class="hero">
+            <h1>🌐 Welcome to Webserv!</h1>
+            <div class="status-badge">
+                ✅ Server Running Successfully
+            </div>
+            <p class="hero-description">
+                A high-performance, modular web server built from scratch in C++98. 
+                Experience fast file serving, robust HTTP handling, and seamless file management.
+            </p>
         </div>
         
-        <h3>Features Implemented:</h3>
-        <ul>
-            <li>✅ Configuration file parsing</li>
-            <li>✅ HTTP request parsing</li>
-            <li>✅ Static file serving</li>
-            <li>✅ Directory listing (when enabled)</li>
-            <li>✅ Location-based routing</li>
-            <li>✅ Method restrictions</li>
-            <li>✅ Custom error pages</li>
-            <li>✅ MIME type detection</li>
-            <li>✅ File upload (POST multipart/form-data)</li>
-            <li>✅ File download and serving</li>
-            <li>🔄 CGI support (in progress)</li>
-            <li>🔄 DELETE handling (in progress)</li>
-        </ul>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>High Performance</h3>
+                <p>Built with C++98 for maximum efficiency and speed. Handles multiple concurrent connections with ease.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>Modular Architecture</h3>
+                <p>Clean, organized codebase with separate modules for configuration, HTTP handling, and connection management.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📁</div>
+                <h3>File Management</h3>
+                <p>Upload, download, and view files with an intuitive web interface. Support for multiple file types.</p>
+            </div>
+        </div>
+        
+        <div class="quick-links">
+            <h2>🔗 Quick Access</h2>
+            <div class="links-grid">
+                <a href="/upload.html" class="link-card">
+                    <span class="link-icon">📤</span>
+                    <div class="link-title">Upload Files</div>
+                    <div class="link-desc">Share your files easily</div>
+                </a>
+                
+                <a href="/uploads.html" class="link-card">
+                    <span class="link-icon">📁</span>
+                    <div class="link-title">View Uploads</div>
+                    <div class="link-desc">Browse uploaded files</div>
+                </a>
+                
+                <a href="/tours/" class="link-card">
+                    <span class="link-icon">🗺️</span>
+                    <div class="link-title">Tours</div>
+                    <div class="link-desc">Explore the site</div>
+                </a>
+                
+                <a href="/cgi-bin/" class="link-card">
+                    <span class="link-icon">⚙️</span>
+                    <div class="link-title">CGI Scripts</div>
+                    <div class="link-desc">Dynamic content</div>
+                </a>
+                
+                <a href="/nonexistent" class="link-card">
+                    <span class="link-icon">🚫</span>
+                    <div class="link-title">404 Test</div>
+                    <div class="link-desc">Error page demo</div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="features-section">
+            <h2>🎯 Server Features</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <span class="feature-status">✅</span>
+                    <div class="feature-text">Configuration file parsing</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">✅</span>
+                    <div class="feature-text">HTTP request/response handling</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">✅</span>
+                    <div class="feature-text">Static file serving</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">✅</span>
+                    <div class="feature-text">Directory listing</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">✅</span>
+                    <div class="feature-text">Location-based routing</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">✅</span>
+                    <div class="feature-text">Method restrictions</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">✅</span>
+                    <div class="feature-text">Custom error pages</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">✅</span>
+                    <div class="feature-text">MIME type detection</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">✅</span>
+                    <div class="feature-text">File upload (multipart/form-data)</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">✅</span>
+                    <div class="feature-text">File download and serving</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">🔄</span>
+                    <div class="feature-text">CGI support (in progress)</div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-status">🔄</span>
+                    <div class="feature-text">DELETE method handling</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🌟 Webserv - Built with passion and C++98</p>
+            <p><small>A project demonstrating modern web server architecture</small></p>
+        </div>
     </div>
 </body>
 </html>
