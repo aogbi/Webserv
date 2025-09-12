@@ -6,7 +6,7 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 00:00:00 by aogbi             #+#    #+#             */
-/*   Updated: 2025/09/06 10:44:49 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/09/12 17:47:27 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,6 @@ void printUsage(const char* programName);
  */
 bool validateArguments(int argc, char* argv[]);
 
-/**
- * @brief Get configuration file path from arguments or default
- * @param argc Number of arguments
- * @param argv Array of argument strings
- * @return Configuration file path
- */
 std::string getConfigFile(int argc, char* argv[]);
 
-#endif // UTILS_HPP
+#endif

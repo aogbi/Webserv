@@ -6,7 +6,7 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 00:00:00 by aogbi             #+#    #+#             */
-/*   Updated: 2025/09/06 12:26:14 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/09/12 17:56:39 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,23 +61,17 @@ bool Server::setup() {
         std::cerr << "socket failed: " << strerror(errno) << std::endl;
         return false;
     }
-
     int opt = 1;
     setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-
     if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
         std::cerr << "bind failed: " << strerror(errno) << std::endl;
         return false;
     }
-
     if (listen(server_fd, SOMAXCONN) < 0) {
         std::cerr << "listen failed: " << strerror(errno) << std::endl;
         return false;
     }
-
-    // Initialize connection manager
     connectionManager = new ConnectionManager(server_fd);
-    
     std::cout << "Server listening on port " << config.getPort() << std::endl;
     return true;
 }
@@ -98,7 +92,7 @@ int Server::acceptClient() {
 }
 
 void Server::run() {
-    const int POLL_TIMEOUT = 1000; // 1 second poll timeout
+    const int POLL_TIMEOUT = 1000;
     
     std::cout << "🚀 Server running... (Press Ctrl+C to stop)" << std::endl;
 

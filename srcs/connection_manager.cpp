@@ -6,7 +6,7 @@
 /*   By: aogbi <aogbi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 00:00:00 by aogbi             #+#    #+#             */
-/*   Updated: 2025/09/06 11:02:11 by aogbi            ###   ########.fr       */
+/*   Updated: 2025/09/12 17:56:39 by aogbi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <cstdlib>
 
 ConnectionManager::ConnectionManager(int serverFd) {
-    // Add server socket to poll list
     struct pollfd serverPoll;
     serverPoll.fd = serverFd;
     serverPoll.events = POLLIN;
